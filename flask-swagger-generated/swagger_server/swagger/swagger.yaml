@@ -1,0 +1,206 @@
+openapi: 3.0.0
+info:
+  title: Sandwich Shop Sample API
+  description: This is a sample API
+  version: "1"
+servers:
+- url: https://virtserver.swaggerhub.com/dhillondemos/SandwichShop/1
+  description: SwaggerHub API Auto Mocking
+paths:
+  /products/{productId}:
+    get:
+      summary: Returns a product/product name based on its unique product id
+      operationId: products_product_id_get
+      parameters:
+      - name: productId
+        in: path
+        description: Unique prouduct ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucessful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: The specified product ID is invalid (.e.g. not a number)
+        "404":
+          description: A product with the specified ID was not found
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /products/prices/{productId}:
+    get:
+      summary: Returns the price (rounded up) of a single product based on productId
+      operationId: products_prices_product_id_get
+      parameters:
+      - name: productId
+        in: path
+        description: Unique product Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_1"
+        "400":
+          description: The specified product ID is invalid
+        "404":
+          description: 'A product with the specified product id was not found '
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /products/getAllProducts:
+    get:
+      summary: Returns a list of all the products available
+      operationId: products_get_all_products_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_2"
+        "404":
+          description: Unable to retrieve any products
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /products/removeProduct/{productId}:
+    delete:
+      summary: Delete an item based on product id provided
+      operationId: products_remove_product_product_id_delete
+      parameters:
+      - name: productId
+        in: path
+        description: Unique Product Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successfully removed product
+        "404":
+          description: Could not find product to delete
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /orders/createOrder/{order}:
+    post:
+      summary: Create a new order
+      operationId: orders_create_order_order_post
+      parameters:
+      - name: order
+        in: path
+        description: Product Order
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully created order
+        "404":
+          description: Unable to create order
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /products/addProduct/name/name={productName}&price={productPrice}:
+    post:
+      summary: Add a new item to menu
+      operationId: products_add_product_name_nameproduct_namepriceproduct_price_post
+      parameters:
+      - name: productName
+        in: path
+        description: Name of the product
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: productPrice
+        in: path
+        description: Name of the product
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful Response
+        "404":
+          description: Unable to create order
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /products/updatePrice/pid={productId}&newPrice={newPrice}:
+    put:
+      summary: Update the price of a an item
+      operationId: products_update_price_pidproduct_idnew_pricenew_price_put
+      parameters:
+      - name: productId
+        in: path
+        description: Unique id of product
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: newPrice
+        in: path
+        description: New price of Product
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful Response
+        "404":
+          description: Unable to update price for product
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    inline_response_200:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 8
+        name:
+          type: string
+          example: BLT
+      example:
+        name: BLT
+        id: 8
+    inline_response_200_1:
+      type: object
+      properties:
+        price:
+          type: integer
+          example: 5
+      example:
+        price: 5
+    inline_response_200_2:
+      type: object
+      properties:
+        productsList:
+          type: array
+          example:
+          - BLT
+          - Pulled Pork
+          - Grilled Chicken
+          - Cuban
+          items:
+            type: string
+      example:
+        productsList:
+        - BLT
+        - Pulled Pork
+        - Grilled Chicken
+        - Cuban
+
